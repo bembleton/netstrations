@@ -1,0 +1,14 @@
+[
+  {
+    "pattern": "{0} in a {1}",
+    "replacements": ["noun", "container"]
+  },
+  {
+    "pattern": "{0} full of {1}",
+    "replacements": ["container", "noun"]
+  },
+  {
+    "pattern": "{1} {2}",
+    "replacements": ["modifier", "noun"]
+  }
+]

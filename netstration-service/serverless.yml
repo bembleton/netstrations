@@ -1,0 +1,122 @@
+
+service: netstrations
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-1
+  environment:
+    WEB_URL: http://netstration.surge.sh
+    ROOMS_TABLE: ${self:service}-${self:provider.stage}-rooms
+    CONNECTIONS_TABLE: ${self:service}-${self:provider.stage}-connections
+    STAGE: ${self:provider.stage}
+    IMAGES_BUCKET_NAME: ${self:custom.imagesBucketName}
+    APIGATEWAY_URL:
+      Fn::Join:
+        - ''
+        - - https://
+          - Ref: ApiGatewayRestApi
+          - .execute-api.
+          - Ref: AWS::Region
+          - .amazonaws.com/
+          - ${self:provider.stage}
+    WEBSOCKET_DOMAIN:
+      Fn::Join:
+        - ''
+        - - Ref: WebsocketsApi
+          - .execute-api.
+          - Ref: AWS::Region
+          - .amazonaws.com
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.ROOMS_TABLE}"
+
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.CONNECTIONS_TABLE}"
+
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+      Resource:
+        - 'arn:aws:s3:::${self:custom.imagesBucketName}/*'
+
+functions:
+  api:
+    handler: handler.api
+    events:
+      - http:
+          path: api/{any+}
+          method: get
+          cors: true
+      - http:
+          path: api/{any+}
+          method: post
+          cors: true
+      - http:
+          path: api/{any+}
+          method: put
+          cors: true
+
+  # getGame:
+  #   handler: handler.getGame
+  #   events:
+  #     - http:
+  #         path: games/{room_code}
+
+  connectWS:
+    handler: handler.connectWS
+    events:
+      - websocket: $connect
+
+  handleWS:
+    handler: handler.handleWS
+    events:
+      - websocket: $default 
+
+  disconnectWS:
+    handler: handler.disconnectWS
+    events:
+      - websocket: $disconnect 
+      
+plugins:
+  - serverless-offline
+  - serverless-webpack
+  - serverless-stack-output
+
+resources:
+  - ${file(resources/apigateway.yml)}
+  - ${file(resources/websockets.yml)}
+  - ${file(resources/images-bucket.yml)}
+
+custom:
+  imagesBucketName: ${self:custom.env.imagesBucketName.${self:provider.stage}, self:custom.env.imagesBucketName.default}
+  output:
+    file: .serverless/stack.json
+  webpack:
+    webpackConfig: 'webpack.config.js'   # Name of webpack configuration file
+    includeModules: false   # Node modules configuration for packaging
+    packager: 'npm'   # Packager that will be used to package your external modules
+    excludeFiles: ./**/*.test.js # Provide a glob for files to ignore
+  env:
+    imagesBucketName:
+      prod: ${self:service}-images
+      default: ${self:service}-images-${self:provider.stage}

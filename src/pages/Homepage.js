@@ -1,0 +1,53 @@
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import * as api from '../client/api';
+import { useInput } from '../effects/useInput';
+
+export const Homepage = () => {
+  const history = useHistory();
+  const { value: room_code, bind: bindCode } = useInput('');
+  
+  const joinRoom = () => {
+    history.push(`/?${room_code}`);
+  };
+
+  const createRoom = async () => {
+    const roomInfo = await api.createRoom();
+    if (roomInfo) {
+      history.push(`/?${roomInfo.room_code}`);
+    }
+  };
+
+  const textInputPattern = '';
+  const toUpperCase = function (e){
+    e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9 !?.'":]/g, '');
+  };
+  
+  return (
+    <div className="App">
+      <header className="App-header title">
+        Netstrations
+      </header>
+      
+      <div className="App-section spaced">
+        <label>Room Code:</label>
+        <input
+          type="text"
+          {...bindCode}
+          placeholder="CODE"
+          pattern={textInputPattern}
+          onInput={toUpperCase}
+          maxLength={4}
+          autoComplete="off"
+          spellCheck={false}
+          className="font-large"
+        />
+        <button onClick={joinRoom} className="button-primary">Join Game</button>
+      </div>
+      <div className="App-section">
+        <span className="description">Or start a new one ...</span>
+        <button onClick={createRoom} className="button-primary">Create Game</button>
+      </div>
+    </div>
+  );
+};

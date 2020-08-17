@@ -1,0 +1,12 @@
+{
+  "ImagesBucketName": "netstrations-images-dev",
+  "ApiGatewayWebsocketsApi": "qjk1t7724m",
+  "DisconnectWSLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:219185522083:function:netstrations-dev-disconnectWS:16",
+  "ApiLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:219185522083:function:netstrations-dev-api:9",
+  "HandleWSLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:219185522083:function:netstrations-dev-handleWS:27",
+  "ApiGatewayRestApi": "iiemxjssaa",
+  "ConnectWSLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:219185522083:function:netstrations-dev-connectWS:22",
+  "ServiceEndpoint": "https://iiemxjssaa.execute-api.us-east-1.amazonaws.com/dev",
+  "ServiceEndpointWebsocket": "wss://qjk1t7724m.execute-api.us-east-1.amazonaws.com/dev",
+  "ServerlessDeploymentBucketName": "netstrations-dev-serverlessdeploymentbucket-1bbnsn5lb62bx"
+}

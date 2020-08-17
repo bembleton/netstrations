@@ -1,0 +1,9 @@
+Resources:
+  ApiGatewayRestApi:
+    Type: AWS::ApiGateway::RestApi
+
+Outputs:
+  ApiGatewayRestApi:
+    Description: API Gateway Endpoint
+    Value:
+      Ref: ApiGatewayRestApi

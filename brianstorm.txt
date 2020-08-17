@@ -1,0 +1,78 @@
+const player = {
+  id: '',
+  connectionId: '',
+  name: '',
+  avatar_url: ''
+}
+
+const netstration = {
+  id: '',
+  gameId: '',
+  title: '',
+  turns: [
+    {
+      type: 'drawing',
+      url: '',
+      playerId: ''
+    },
+    {
+      type: 'guess',
+      title: '',
+      playerId: ''
+    }
+  ]
+};
+
+const game = {
+  id: '',
+  state: '',
+  players: [],
+  netstrations: []
+}
+
+// messages
+const netstrationMessage = {
+  type: '',
+  data: {}
+}
+const enterGameLobbyMessage = {
+  roomcode: '',
+  game: {}
+}
+
+
+HOMEPAGE /
+> [join game]: roomcode
+> [create game]
+! get new game id
+
+GAME LOBBY ENTRY /{roomcode}
+> enter name: name
+> draw avatar: [img capture]
+> [join]
+> establish websocket
+! add connection to game
+! send game model
+
+GAME LOBBY
+> see other joined players
+> select topic pack
+> [start]
+
+! generate player chains for each player
+! send topic to each player
+
+GAME DRAW PHASE
+> display title
+> display timer
+> draw picture
+> [send]
+
+
+
+POST /games
+{
+  id: ''
+}
+
+wss://foo/id

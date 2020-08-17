@@ -1,0 +1,39 @@
+Resources:
+  RoomsDynamoDbTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Retain
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: "room_code"
+          AttributeType: "S"   
+      KeySchema:
+        -
+          AttributeName: "room_code"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: "NEW_AND_OLD_IMAGES"
+      TableName: ${self:provider.environment.ROOMS_TABLE}
+
+  ConnectionsDynamoDbTable:
+    Type: 'AWS::DynamoDB::Table'
+    DeletionPolicy: Retain
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: "connectionId"
+          AttributeType: "S"
+        
+      KeySchema:
+        -
+          AttributeName: "connectionId"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      StreamSpecification:
+        StreamViewType: "NEW_AND_OLD_IMAGES"
+      TableName: ${self:provider.environment.CONNECTIONS_TABLE}

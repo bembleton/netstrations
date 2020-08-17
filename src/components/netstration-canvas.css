@@ -1,0 +1,94 @@
+.canvas-container {
+  display: flex;
+  flex-direction: column;
+}
+.canvas-controls {
+  display: flex;
+  justify-content: center;
+  padding: 16px 0;
+}
+
+.canvas-control {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-right: 16px;
+}
+
+.canvas-control:last-child {
+  padding-right: 0;
+}
+
+.canvas-controls button {
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.canvas-controls .square {
+  width: 3rem;
+}
+
+.colorPicker {
+  height: 100%;
+}
+
+.fsoverlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0.8;
+  background-color: white;
+  visibility: visible;
+}
+
+.fsoverlay.hidden {
+  visibility: hidden;
+}
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.colorPicker-popup {
+  background-color: #303544;
+  border: 2px solid white;
+  border-radius: 4px;
+  visibility: hidden;
+  position: fixed;
+  z-index: 10;
+  padding: 24px;
+}
+
+.colorPicker-popup.open {
+  visibility: visible;
+}
+
+ul.reset {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.colorPicker-menu {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 16px;
+}
+
+.colorPicker-button {
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
+  border: 1px solid white;
+}
+
+.stretch {
+  flex-grow: 1;
+}

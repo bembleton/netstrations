@@ -1,0 +1,9 @@
+Resources:
+  WebsocketsApi:
+    Type: AWS::ApiGatewayV2::Api
+
+Outputs:
+  ApiGatewayWebsocketsApi:
+    Description: Websockets Endpoint
+    Value:
+      Ref: WebsocketsApi
