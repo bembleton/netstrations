@@ -1,14 +1,15 @@
 import { useGameContext } from "./gameContext";
-import { useSetup, useTeardown } from "./useSanity";
+import { useTeardown, useUpdates } from "./useSanity";
 
-export const useMessage = (action, handler) => {
+export const useMessage = (action, handler, deps = []) => {
   const { client } = useGameContext();
 
-  useSetup(() => {
+  useUpdates(() => {
     client.addMessageHandler(action, handler);
-  });
+  }, deps);
 
   useTeardown(() => {
+    console.log(`[useMessage Teardown] ${action}`);
     client.removeMessageHandler(action);
   });
 };

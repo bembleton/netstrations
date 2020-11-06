@@ -3,8 +3,19 @@
   background-color: #171921;
   color: #F2F2F2;
   height: 100vh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.scrolling {
+  height: auto;
+  overflow: auto;
+}
+
+.flexfill {
+  flex: 1 1;
   align-items: center;
 }
 
@@ -29,6 +40,7 @@
   color: white;
   width: 100%;
   height: 60px;
+  min-height: 60px;
 }
 
 .App-header.title {
@@ -39,14 +51,15 @@
 
 
 .App-section {
-  width: 50vh;
+  width: 100%;
+  padding: 0 24px;
   display: flex;
   flex-direction: column;
-  margin-bottom: 32px;
+  padding-bottom: 32px;
 }
 
 .spaced {
-  margin-top: 32px;
+  padding-top: 32px;
 }
 
 .App-link {
@@ -63,6 +76,14 @@ span.description {
   color: #aaaaaa;
   font-style: italic;
   padding: 8px 0;
+}
+
+span.uppercase {
+  text-transform: uppercase;
+}
+
+span.playername {
+  padding-right: 4px;
 }
 
 label {
@@ -88,6 +109,30 @@ input[type="text"] {
   letter-spacing: unset;
 }
 
+button {
+  cursor: pointer;
+}
+
+.iconButton {
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.iconButton-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconButton svg {
+  stroke: #dddddd;
+  fill: #dddddd;
+}
+
 .button-primary {
   height: 40px;
   width: 100%;
@@ -96,5 +141,204 @@ input[type="text"] {
   background-color: #337051;
   color: #dddddd;
   border: 1px solid #dddddd;
-  border-radius: 2px;
+  border-radius: 4px;
+}
+
+.button-primary:active {
+  background-color: #26543C;
+  border: 1px solid #aaaaaa;
+}
+
+.button-primary[disabled] {
+  background-color: #aaaaaa;
+  color: #444444;
+}
+
+div.roomLink {
+  display: flex;
+  align-items: center;
+  margin: 8px;
+  width: 100%;
+}
+
+input.roomLink-input {
+  height: 28px;
+  padding: 8px 16px;
+  margin-bottom: 0;
+  font-size: 14px;
+  text-transform: lowercase;
+}
+
+.roomLink-button {
+  height: 32px;
+  width: 32px;
+  margin-left: 8px;
+}
+
+.readyPage-player {
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.players-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  padding-top: 16px;
+  padding-left: 8px;
+}
+
+.player {
+  display: flex;
+  flex-direction: column;
+  margin-right: 16px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.player.busy {
+  opacity: 0.3;
+}
+
+.player-name {
+  text-transform: uppercase;
+  word-break: break-word;
+  white-space: normal;
+  text-overflow: ellipsis;
+  max-width: 100px;
+}
+
+.player-status {
+  margin-top: 8px;
+  color: goldenrod;
+}
+
+.readyPage-timer {
+  background-color: #303544;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 48px;
+}
+
+.readyPage-timer span.label {
+  flex-grow: 1;
+  font-size: 20px;
+}
+
+.readyPage-timer span.value {
+  flex-grow: 1;
+  font-size: 24px;
+}
+
+.game-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.game-option:last-of-type {
+  margin-top: 8px;
+  margin-bottom: 32px;
+}
+
+.game-option label {
+  margin-right: 16px;
+  flex: 1 1;
+}
+
+.game-option .option-editor {
+  flex: 1 1;
+}
+
+.option-editor * {
+  height: 32px;
+  width: 100%;
+}
+
+span.playerName {
+  text-transform: uppercase;
+}
+
+.sketchbook-title {
+  background-color: #303544;
+  padding: 8px 0;
+}
+
+.sketchbook-title.big {
+  background-color: #303544;
+  font-size: 20px;
+  padding: 16px 0;
+}
+
+.sketchbook-title span {
+  text-transform: uppercase;
+}
+
+.netstration-image {
+  width: 100%;
+  max-width: 100%;
+}
+
+.netstration-image.fillheight {
+  width: unset;
+  height: 100%;
+  object-fit: contain;
+}
+
+.sketchbook-nav {
+  width: 100%;
+  display: flex;
+  margin-top: -16px;
+  padding: 0px 24px 32px 24px;
+  justify-content: space-between;
+}
+
+.sketchbookReview-button {
+  height: 36px;
+  max-width: 45%;
+  flex-grow: 1;
+  font-size: 16px;
+  text-transform: uppercase;
+  background-color: #337051;
+  color: #dddddd;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+}
+
+.sketchbookReview-button:active {
+  background-color: #26543C;
+  border: 1px solid #aaaaaa;
+}
+
+.sketchbookReview-button[disabled] {
+  background-color: #aaaaaa;
+  color: #444444;
+}
+
+.timer {
+  position: absolute;
+  margin: 1px;
+  background-color: #33333388;
+  pointer-events: none;
+}
+
+.timer span {
+  padding: 1px;
+}
+
+/* desktop */
+@media screen and (min-width: 768px) {
+  .App-section,
+  .sketchbook-nav {
+    width: 50vh;
+  }
+  .netstration-image.fillheight {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 }

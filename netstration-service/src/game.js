@@ -7,7 +7,11 @@ export const createGame = async () => {
 };
 
 export const getRoomInfo = async (room_code) => {
-  return getRoom(room_code);
+  try {
+    return await getRoom(room_code);
+  } catch (e) {
+    console.log('failed to getRoomInfo', e);
+  }
 };
 
 export const addPlayerToRoom = async (room_code, player) => {
@@ -49,10 +53,16 @@ export const removePlayer = async (connectionId) => {
   const { players = [] } = room;
   const player = players.find(x => x.connectionId === connectionId);
   if (!player) return;
+  const wasHost = player.isHost;
 
   const remainingPlayers = players.filter(x => x.connectionId !== connectionId);
+  if (wasHost && remainingPlayers[0]) {
+    const newHost = remainingPlayers[0];
+    newHost.isHost = true;
+    await send(newHost.connectionId, { action: 'setPlayerInfo', data: newHost });
+  }
   room.players = remainingPlayers;
-
+  
   await Promise.all([
     updateRoom(room),
     removeConnection(connectionId)

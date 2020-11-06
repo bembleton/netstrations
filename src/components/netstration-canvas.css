@@ -1,7 +1,14 @@
 .canvas-container {
   display: flex;
   flex-direction: column;
+  padding-top: 4px;
 }
+
+.canvas-image {
+  background-color: #F2F2F2;
+  align-self: center;
+}
+
 .canvas-controls {
   display: flex;
   justify-content: center;
@@ -17,6 +24,7 @@
 
 .canvas-control:last-child {
   padding-right: 0;
+  flex-grow: 1;
 }
 
 .canvas-controls button {

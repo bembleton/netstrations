@@ -21,7 +21,13 @@ export const send = async (connectionId, message) => {
 };
 
 export const sendAll = async (connections, message) => {
-  return Promise.all(connections.map(async (x) => send(x, message)))
+  await Promise.all(connections.map(async (x) => {
+    try {
+      await send(x, message);
+    } catch (e) {
+      console.log(`Failed to broadcast to ${x}`);
+    }
+  }));
 };
 
 export const handleMessage = async (message) => {

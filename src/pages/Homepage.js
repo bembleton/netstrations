@@ -6,7 +6,8 @@ import { useInput } from '../effects/useInput';
 export const Homepage = () => {
   const history = useHistory();
   const { value: room_code, bind: bindCode } = useInput('');
-  
+  const enteredRoomCode = room_code && room_code.length === 4;
+
   const joinRoom = () => {
     history.push(`/?${room_code}`);
   };
@@ -25,9 +26,9 @@ export const Homepage = () => {
   
   return (
     <div className="App">
-      <header className="App-header title">
+      <div className="App-header title">
         Netstrations
-      </header>
+      </div>
       
       <div className="App-section spaced">
         <label>Room Code:</label>
@@ -42,7 +43,7 @@ export const Homepage = () => {
           spellCheck={false}
           className="font-large"
         />
-        <button onClick={joinRoom} className="button-primary">Join Game</button>
+        <button disabled={!enteredRoomCode} onClick={joinRoom} className="button-primary">Join Game</button>
       </div>
       <div className="App-section">
         <span className="description">Or start a new one ...</span>

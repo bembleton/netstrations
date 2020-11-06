@@ -2,11 +2,41 @@ import React, { createContext, useState, useMemo, useContext, useCallback } from
 import { GameClient } from '../client/gameClient';
 import { mergeDeep } from '../utils';
 import { useTeardown } from './useSanity';
+import { debug, testData } from './testData';
 
-const initialState = {
+// const player = {
+//   connectionId: '',
+//   name: '',
+//   avatar_url: '',
+//   status: 'ready|busy|waiting' 
+// };
+// status     sketchbooks
+//            next  current
+// ready      {}    null
+// busy       *     {}
+// waiting    null  null
+
+const initData = {
   playerInfo: null,
-  players: []
+  players: [],
+  isHost: false,
+  game_mode: 'lobby', // lobby|game|review
+  round_index: 0,
+  round_stop_time: null,
+  sketchbook: null,
+  next_sketchbook: null,
+  all_sketchbooks: []
 };
+
+// const sketchbook = {
+//   title: null,
+//   pages: [
+//     { type: 'draw', player: {}, url: null, title: null },
+//     { type: 'guess', player: {}, url: null, title: null }
+//   ]
+// }
+
+const initialState = debug ? testData : initData;
 
 export const gameContext = createContext(initialState);
 const { Provider } = gameContext;

@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 export function LockedRoomPage({ room_code, message }) {
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="App-header">
         Room: {room_code}
-      </header>
+      </div>
       <div>
         <span>{message}</span>
       </div>

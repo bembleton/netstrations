@@ -5,8 +5,10 @@ export const usePlayerInfo = () => {
   const { gameState, updateGameState } = useGameContext();
   const { playerInfo } = gameState;
 
-  useMessage('setPlayerInfo', (data) => {
-    updateGameState({ playerInfo: data });
+  useMessage('setPlayerInfo', (playerInfo) => {
+    console.log(`[setPlayerInfo]`, playerInfo);
+    const { isHost } = playerInfo;
+    updateGameState({ isHost, playerInfo });
   });
   
   return playerInfo;

@@ -1,27 +1,24 @@
 import React, { useState } from 'react';
-import { NestrationCanvas } from '../components/NestrationCanvas';
-import * as imageUploader from '../client/imageUploader';
 import { useGameContext } from '../effects/gameContext';
 import { useTeardown } from '../effects/useSanity';
-import { useRoomCode } from '../effects/useRoomCode';
+import { useInput } from '../effects/useInput';
 
-export const DrawPage = ({ title }) => {
-  const room_code = useRoomCode();
+export const GuessPage = ({ playerName, url }) => {
   const { client, gameState, updateGameState } = useGameContext();
   const [isSending, setIsSending] = useState(false);
-  const { round_index, round_end_time, sketchbook } = gameState;
-  
-  const submit = async (blob) => {
+  const { value: title, bind: bindTitle } = useInput('');
+  const { sketchbook, round_index } = gameState;
+
+  const submit = async () => {
     setIsSending(true);
-    
-    const url = await imageUploader.upload(room_code, title, blob);
+
     const page = sketchbook.pages[round_index];
-    page.url = url;
+    page.title = title;
 
     var nextPage = sketchbook.pages[round_index + 1];
     if (nextPage) {
       const { player } = nextPage;
-      nextPage.url = url;
+      nextPage.title = title;
       client.assignSketchbook(player, sketchbook);
     } else {
       // give it back to the first player
@@ -39,10 +36,19 @@ export const DrawPage = ({ title }) => {
   return (
     <div className="App">
       <div className="App-header">
-        {title}
+        {playerName} drew this
       </div>
       <div className="App-section">
-        <NestrationCanvas onSubmit={submit} disabled={isSending} round_end_time={round_end_time} />
+        <img src={url} className="netstration-image" alt={`${playerName}'s drawing`} />
+      </div>
+      <div className="App-section">
+        <label>What is this?</label>
+        <input
+          type="text"
+          maxLength={30}
+          {...bindTitle}
+        />
+        <button onClick={submit} disabled={isSending} className="button-primary">Next</button>
       </div>
     </div>
   );

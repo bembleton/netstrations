@@ -34,6 +34,7 @@ export const RegisterPage = ({ room_code }) => {
       <label>Your Name:</label>
       <input
         type="text"
+        maxLength={15}
         {...bindName}
         spellCheck={false}
         className="font-large dense"
@@ -43,7 +44,7 @@ export const RegisterPage = ({ room_code }) => {
   );
 
   const avatarForm = (
-    <div className="App-section spaced">
+    <div className="App-section">
       <label>Draw a Picture of Yourself</label>
       <NestrationCanvas onSubmit={submit} disabled={isSending} />
     </div>
@@ -51,9 +52,9 @@ export const RegisterPage = ({ room_code }) => {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="App-header">
         Room: {room_code}
-      </header>
+      </div>
       {!hasName ? nameForm : avatarForm}
     </div>
   );

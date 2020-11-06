@@ -1,5 +1,4 @@
-import { getRoom } from './database/rooms';
-import { send } from './websocket';
+import { send, sendAll } from './websocket';
 import { addPlayerToRoom } from './game';
 
 /** Called immediately after a client connects */
@@ -13,9 +12,16 @@ export const completeConnection = async (message) => {
   await send(connectionId, resp)
 }
 
-export const relay = async (message) => {
-  const { connectionId, message: innerMessage } = message;
-  await send(connectionId, innerMessage);
+export const ping = async () => {};
+
+export const relay = async ({ data }) => {
+  const { connectionId: recipient, message } = data;
+  await send(recipient, message);
+};
+
+export const broadcast = async ({ data }) => {
+  const { connections, message } = data;
+  await sendAll(connections, message);
 };
 
 // /** Gets a list of registered players */

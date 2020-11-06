@@ -22,7 +22,8 @@ Resources:
         Ref: ImagesBucket
       PolicyDocument:
         Statement:
-          - Effect: Allow
+          - Sid: PublicReadGetObject
+            Effect: Allow
             Principal: "*"
             Action:
               - s3:GetObject

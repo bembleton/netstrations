@@ -47,4 +47,3 @@ export const createRoom = async () => {
     return null;
   }
 };
-

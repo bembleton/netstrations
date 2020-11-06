@@ -8,6 +8,11 @@ const ok = (body) => ({
   body: body ? JSON.stringify(body) : ''
 });
 
+const error = (e) => ({
+  statusCode: 500,
+  body: e ? JSON.stringify(e) : ''
+});
+
 // POST /games
 export const createGame = async (event) => {
   const gameInfo = await game.createGame();
@@ -43,6 +48,9 @@ export const api = async (event) => {
   if (event.httpMethod === 'OPTIONS') {
     return response(200)
   }
+
+  const { httpMethod, path: url } = event;
+  console.log(`[API] ${httpMethod} ${url}`);
 
   if (matches(event, 'POST', '/api/games')) {
     const gameInfo = await game.createGame();
@@ -94,7 +102,8 @@ export const handleWS = async (event) => {
   } = JSON.parse(body);
 
   const message = { connectionId, room_code, action, data };
-  await handleMessage(message);
+  try { await handleMessage(message); }
+  catch (e) { return error(e); }
 
   return ok();
 };

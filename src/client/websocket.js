@@ -17,6 +17,8 @@ export class Client {
   constructor () {
     this.room_code = null;
     this.connectionId = null;
+    this.connections = [];
+
     this[_verbose] = true;
     this[_pendingMessages] = [];
     this[_handlers] = {};
@@ -47,7 +49,7 @@ export class Client {
 
       try {
         if (action === 'completeConnection') {
-          this.connnectionId = data.connectionId;
+          this.connectionId = data.connectionId;
           while (pendingMessages.length) {
             const { action, data } = pendingMessages.shift();
             this.send(action, data);
@@ -59,7 +61,7 @@ export class Client {
         if (handler) {
           handler(data);
         } else {
-          console.log(`[Unhandled Action] ${action}`);
+          console.log(`[Unhandled Action] action: ${action}, message:`, message);
         }
 
       } catch (e) {
@@ -77,7 +79,7 @@ export class Client {
       this.connectionId = null;
     }
 
-    
+    this.pingEvent = setInterval(this.ping.bind(this), 60000);
   }
 
   addMessageHandler (action, callback) {
@@ -85,9 +87,19 @@ export class Client {
     handlers[action] = callback;
   }
 
+  removeMessageHandler (action) {
+    const { handlers } = getProtected(this);
+    delete handlers[action];
+  }
+
   disconnect () {
     const { client } = getProtected(this);
     client.close();
+    clearInterval(this.pingEvent);
+  }
+
+  ping () {
+    this.send('ping');
   }
 
   send (action, data) {
@@ -104,8 +116,8 @@ export class Client {
     }
     const message = { room_code, action, data };
     if (verbose) {
-      console.log(`[Sending Message] ${action}`);
-      console.log(message);
+      //console.log(`[Sending Message] ${action}`);
+      //console.log(message);
     }
     client.send(JSON.stringify(message));
   }
@@ -115,6 +127,14 @@ export class Client {
       connectionId: player.connectionId,
       message: { action, data }
     };
-    this.send('relay', message)
+    this.send('relay', message);
+  }
+
+  broadcast (action, data)  {
+    const message = {
+      connections: this.connections,
+      message: { action, data }
+    };
+    this.send('broadcast', message);
   }
 }

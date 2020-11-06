@@ -9,9 +9,15 @@ export class GameClient extends Client {
     };
     this.send('registerPlayer', player);
   }
-  submitDrawing (url) {
-    const netstration = {};
-    this.send('submitDrawing', netstration);
+
+  assignSketchbook (player, sketchbook) {
+    this.sendToPlayer(player, 'assignSketchbook', sketchbook);
   }
-  submitGuess
+
+  updateStatus (status) {
+    this.broadcast('setPlayerStatus', {
+      connectionId: this.connectionId,
+      status
+    });
+  }
 }

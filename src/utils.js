@@ -29,3 +29,7 @@ export function mergeDeep(target, ...sources) {
 
   return mergeDeep(target, ...sources);
 }
+
+export const randomChoice = (arry) => {
+  return arry[Math.floor(Math.random()*arry.length)];
+};

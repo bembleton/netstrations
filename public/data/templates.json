@@ -5,7 +5,7 @@
   },
   {
     "pattern": "{0} full of {1}",
-    "replacements": ["container", "noun"]
+    "replacements": ["container", "plural-noun"]
   },
   {
     "pattern": "{1} {2}",
