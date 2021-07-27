@@ -1,6 +1,6 @@
 import { useMessage } from "./useMessage";
 import { useGameContext } from "./gameContext";
-import { usePlayers } from "./usePlayers";
+//import { usePlayers } from "./usePlayers";
 import { useUpdates } from "./useSanity";
 
   // I. host creates a game, registers
@@ -28,7 +28,7 @@ import { useUpdates } from "./useSanity";
 
 export const useGameClient = () => {
   const { client, gameState, updateGameState } = useGameContext();
-  const { ready: everyone_ready, players } = usePlayers();
+  //const { ready: everyone_ready, players } = usePlayers();
   //const [roundTimeout, setRoundTimeout] = useState(null);
   
   const {
@@ -38,6 +38,7 @@ export const useGameClient = () => {
     drawTime,
     isHost,
     playerInfo,
+    players,
     sketchbook,
     next_sketchbook = [],
     all_sketchbooks
@@ -67,22 +68,24 @@ export const useGameClient = () => {
   }, [gameState]);
 
   useMessage('setPlayerStatus', ({ connectionId, status }) => {
-    const player = players.find(x => x.connectionId === connectionId);
+    const playeridx = players.findIndex(x => x.connectionId === connectionId);
     const update = {};
 
     if (playerInfo && connectionId === playerInfo.connectionId) {
-      playerInfo.status = status;
-      update.playerInfo = playerInfo;
+      update.playerInfo = { ...playerInfo, status };
     }
 
-    if (player) {
+    if (playeridx > -1) {
+      const p = players[playeridx];
+      const player = { ...p };
       console.log(`[setPlayerStatus] ${player.name} is now ${status}`);
       player.status = status;
-      update.players = [...players];
+      update.players = players.map(x => ({ ...x }));
+      update.players[playeridx] = player;
     }
 
     updateGameState(update);
-  }, [gameState]);
+  }, [gameState, players]);
 
   // round_index: 0,
 
@@ -134,6 +137,7 @@ export const useGameClient = () => {
   useUpdates(() => {
     if (!isHost) return;
     if (game_mode !== 'game') return;
+    const everyone_ready = players && players.length > 0 && players.every(x => x.status === 'ready');
     if (!everyone_ready) return;
     
     if (round_index === players.length - 1) {
@@ -149,7 +153,7 @@ export const useGameClient = () => {
       round_end_time: drawTime ? new Date(Date.now() + drawTime*1000).getTime() : null
     });
 
-  }, [drawTime, game_mode, isHost, everyone_ready]);
+  }, [drawTime, game_mode, isHost, players]);
 
   // useUpdates(() => {
   //   if (round_end_time === null) {
@@ -163,10 +167,6 @@ export const useGameClient = () => {
   //   }, timespan);
   //   setRoundTimeout(timeout);
   // }, [round_end_time]);
-
-  useUpdates(() => {
-    console.log(gameState);
-  }, [gameState]);
 
   // useTeardown(() => {
   //   setRoundTimeout(timeout => {

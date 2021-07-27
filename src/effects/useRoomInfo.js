@@ -12,6 +12,7 @@ export const useRoomInfo = () => {
   const roomInfo = players ? { locked, players } : undefined;
 
   useMessage('setPlayers', (players) => {
+    console.log('Players Updated');
     client.connections = players.map(x => x.connectionId);
     updateGameState({ players });
   }, [gameState]);

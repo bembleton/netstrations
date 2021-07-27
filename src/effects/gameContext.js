@@ -47,8 +47,10 @@ export const GameStateProvider = ({ children }) => {
   const [gameState, setGameState] = useState(initialState);
   
   const updateGameState = useCallback((updates) => {
-    const newState = mergeDeep(gameState, updates);
-    setGameState({ ...newState });
+    const merged = mergeDeep(gameState, updates);
+    const newState = { ...merged };
+    console.log(JSON.stringify(newState));
+    setGameState(newState);
   }, [gameState]);
 
   useTeardown(() => {
